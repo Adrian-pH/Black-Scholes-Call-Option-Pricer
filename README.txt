@@ -8,6 +8,6 @@ I wrote this as a mini-project on the content taught in Paul Wilmott Introduces 
 - 2D plots of option value against time and underlying price
 - 3D surface plot of option value
 
-##Dependencies
+##Requirements
 - Install a python environment
 - Install; matplotlib, numpy and scipy libraries
