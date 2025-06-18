@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
 Created on Tue Jun 17 09:50:14 2025
 
@@ -30,7 +31,7 @@ def C(S,t,r,D,sigma,T,E):
     -------
     np.array - Call option values
     """
-    dt = np.maximum( (T - t)/252 , 0.00001) # Annualise time (assuming 252 trading days/year) and avoid dividing by 0 later
+    dt = np.maximum( (T - t) , 0.00001) # Avoid dividing by 0 later
     d1 = (np.log(S / E) + (r - D + 0.5*sigma**2) * dt) / (sigma * np.sqrt(dt))
     d2 = d1 - sigma * np.sqrt(dt)
     return S * np.exp(-D * dt) * norm.cdf(d1) - E * np.exp(-r * dt) * norm.cdf(d2)
@@ -42,7 +43,7 @@ def C(S,t,r,D,sigma,T,E):
 r = 0.05            #Annualised risk-free interest rate
 D = 0.02            #Annualised dividend yield
 sigma = 0.1         #Annualised volatility of underlying
-T = 5*5             #Time to expiry (5 weeks ~ 25 trading days)
+T = 0.25            #Time to expiry (4 months in years)
 E = 100             #Strike price of option
 
 # --------------------------------------------------------
@@ -50,9 +51,8 @@ E = 100             #Strike price of option
 # --------------------------------------------------------
 
 #Creating S & t arrays
-N = T                       #Resolution of arrays = 1 day
-S = np.linspace(0,150,N+1)
-t = np.linspace(0,T,N+1)
+S = np.linspace(50,150,100) # Resolution = £1
+t = np.linspace(0,T,int(T*252)) # Resolution = 1 day
 
 #Plotting 2D graphs
 fig, axs = plt.subplots(1,2, figsize=(10,5))
@@ -84,8 +84,8 @@ Call = C(S_grid,t_grid,r,D,sigma,T,E)
 fig = plt.figure(figsize=(8,8))
 ax = plt.axes(projection="3d")
 
-ax.plot_surface(t_grid, S_grid ,Call, cmap="Spectral")
-ax.set_xlabel("Time (days)")
+ax.plot_surface(t_grid, S_grid ,Call, cmap="Spectral", edgecolor='none')
+ax.set_xlabel("Time (years)")
 ax.set_ylabel('Underlying Value (£)')
 ax.set_zlabel('Call Option Value (£)')
 ax.set_title('Black-Scholes Call Option Value Surface Plot')
